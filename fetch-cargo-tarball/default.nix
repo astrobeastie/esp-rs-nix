@@ -34,7 +34,6 @@ in
 stdenv.mkDerivation ({
   name = "${name}-vendor.tar.gz";
   nativeBuildInputs = [ cacert git cargo-vendor-normalise cargo ];
-
   dontConfigure = true;
 
   buildPhase = ''
@@ -62,7 +61,8 @@ stdenv.mkDerivation ({
 
     ${cargoUpdateHook}
 
-    cargo vendor $name | cargo-vendor-normalise > $CARGO_CONFIG
+    cargo vendor -s src/tools/cargo/Cargo.toml -s src/bootstrap/Cargo.toml \
+    -s src/tools/rust-analyzer/Cargo.toml $name | cargo-vendor-normalise > $CARGO_CONFIG
 
     # Add the Cargo.lock to allow hash invalidation
     cp Cargo.lock.orig $name/Cargo.lock

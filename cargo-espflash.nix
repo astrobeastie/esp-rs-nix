@@ -3,6 +3,8 @@
 , espflash
 , pkg-config
 , udev
+, openssl
+, libuv
 }:
 
 let
@@ -20,7 +22,11 @@ rustPlatform.buildRustPackage {
 
   nativeBuildInputs = [ pkg-config ];
 
-  buildInputs = [ udev ];
+  buildInputs = [ udev openssl libuv ];
+
+  preBuild = ''
+    export OPENSSL_NO_VENDOR=1
+  '';
 
   meta = with lib; {
     inherit (cargoToml.package) description;

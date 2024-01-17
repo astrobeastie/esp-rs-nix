@@ -8,7 +8,7 @@
 
 stdenv.mkDerivation rec {
   name = "llvm-xtensa";
-  version = "13.0.0";
+  version = "17.0.1";
 
   src = espressif-llvm-project;
 

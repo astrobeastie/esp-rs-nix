@@ -15,7 +15,7 @@
       flake = false;
     };
     espressif-llvm-project = {
-      url = "github:espressif/llvm-project/xtensa_release_13.0.0";
+      url = "github:espressif/llvm-project/xtensa_release_17.0.1";
       flake = false;
     };
   };
@@ -41,8 +41,9 @@
         ldproxy = pkgs.callPackage ./ldproxy.nix { inherit embuild; };
         llvm-xtensa = pkgs.callPackage ./llvm-xtensa.nix { inherit espressif-llvm-project; };
         rust-src = pkgs.callPackage ./rust-src.nix { };
-        rustc = pkgs.callPackage ./rustc.nix { inherit (packages) llvm-xtensa; };
-
+#        rustc-unwrapped = pkgs.callPackage ./rustc.nix { inherit (packages) llvm-xtensa ; rustc-unwrapped=pkgs.rustPackages.rustc-unwrapped; };
+        rustc =  pkgs.wrapRustc (pkgs.callPackage ./rustc.nix { inherit (packages) llvm-xtensa ; rustc-unwrapped=pkgs.rustPackages.rustc-unwrapped; });
+#        rustc = pkgs.wrapRustc packages.rustc-unwrapped;
         rustPlatform = pkgs.makeRustPlatform {
           inherit (packages) rustc cargo;
         };
@@ -60,8 +61,8 @@
             cargo
             cargo-espflash
             cargo-espmonitor
-            espflash
-            espmonitor
+            packages.espflash
+            packages.espmonitor
             ldproxy
             llvm-xtensa
             rust-src

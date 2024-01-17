@@ -14,11 +14,12 @@ rustPlatform.buildRustPackage {
 
   buildAndTestSubdir = "ldproxy";
 
-  cargoLock.lockFile = ./ldproxy-Cargo.lock;
+#  cargoLock.lockFile = ./ldproxy-Cargo.lock;
+  cargoLock.lockFile = "${embuild}/Cargo.lock";
 
-  postPatch = ''
-    cp ${./ldproxy-Cargo.lock} Cargo.lock
-  '';
+#   postPatch = ''
+#    cp ${./ldproxy-Cargo.lock} Cargo.lock
+#  '';
 
   meta = with lib; {
     inherit (cargoToml.package) description;
